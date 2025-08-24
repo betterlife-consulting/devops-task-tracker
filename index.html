@@ -89,11 +89,85 @@
             background: #5a67d8;
         }
 
+        /* Statistics Section - NEW! */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        .completion-rate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .completion-rate .stat-number {
+            color: white;
+        }
+
+        .completion-rate .stat-label {
+            color: rgba(255,255,255,0.9);
+        }
+
         .tasks-section {
             background: white;
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .tasks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tasks-title {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .clear-completed-btn {
+            padding: 8px 16px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .clear-completed-btn:hover {
+            background: #ff5252;
         }
 
         .task-list {
@@ -184,6 +258,11 @@
             padding: 40px;
             color: #999;
         }
+
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -206,10 +285,34 @@
             </div>
         </div>
 
+        <!-- Statistics Dashboard - NEW SECTION! -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalTasks">0</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completedTasks">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendingTasks">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card completion-rate">
+                <div class="stat-number" id="completionRate">0%</div>
+                <div class="stat-label">Completion Rate</div>
+            </div>
+        </div>
+
         <div class="tasks-section">
-            <h2>Your Tasks</h2>
+            <div class="tasks-header">
+                <h2 class="tasks-title">Your Tasks</h2>
+                <button class="clear-completed-btn" onclick="clearCompleted()">Clear Completed</button>
+            </div>
             <ul class="task-list" id="taskList">
                 <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
                     <p>No tasks yet. Add your first task above!</p>
                 </div>
             </ul>
@@ -241,6 +344,7 @@
 
             tasks.push(newTask);
             renderTasks();
+            updateStats(); // NEW - Update statistics!
 
             // Clear input
             taskInput.value = '';
@@ -253,6 +357,7 @@
             if (task) {
                 task.completed = !task.completed;
                 renderTasks();
+                updateStats(); // NEW - Update statistics!
             }
         }
 
@@ -260,6 +365,35 @@
         function deleteTask(id) {
             tasks = tasks.filter(t => t.id !== id);
             renderTasks();
+            updateStats(); // NEW - Update statistics!
+        }
+
+        // Clear completed tasks - NEW FUNCTION!
+        function clearCompleted() {
+            const completedCount = tasks.filter(t => t.completed).length;
+            if (completedCount === 0) {
+                alert('No completed tasks to clear!');
+                return;
+            }
+            
+            if (confirm(`Clear ${completedCount} completed task(s)?`)) {
+                tasks = tasks.filter(t => !t.completed);
+                renderTasks();
+                updateStats();
+            }
+        }
+
+        // Update statistics - NEW FUNCTION!
+        function updateStats() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const pending = total - completed;
+            const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('pendingTasks').textContent = pending;
+            document.getElementById('completionRate').textContent = rate + '%';
         }
 
         // Render tasks to DOM
@@ -269,6 +403,7 @@
             if (tasks.length === 0) {
                 taskList.innerHTML = `
                     <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
                         <p>No tasks yet. Add your first task above!</p>
                     </div>
                 `;
@@ -298,6 +433,11 @@
             if (e.key === 'Enter') {
                 addTask();
             }
+        });
+
+        // Initialize stats on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
         });
     </script>
 </body>
