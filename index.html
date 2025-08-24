@@ -16,22 +16,38 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
+            width: 100%;
+            flex: 1;
         }
 
         .header {
             text-align: center;
             color: white;
             margin-bottom: 30px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
         }
 
         .task-input-section {
@@ -54,6 +70,7 @@
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 16px;
+            transition: border-color 0.3s;
         }
 
         input[type="text"]:focus {
@@ -68,6 +85,7 @@
             font-size: 16px;
             background: white;
             cursor: pointer;
+            transition: border-color 0.3s;
         }
 
         select:focus {
@@ -83,13 +101,16 @@
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
         button:hover {
             background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        /* Statistics Section - NEW! */
+        /* Statistics Section */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -135,11 +156,75 @@
             color: rgba(255,255,255,0.9);
         }
 
+        /* Filter Section - NEW! */
+        .filter-section {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .filter-title {
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .active-filter {
+            color: #667eea;
+            font-size: 0.9em;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-1px);
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .filter-count {
+            background: rgba(255,255,255,0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 5px;
+            font-size: 12px;
+        }
+
         .tasks-section {
             background: white;
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
 
         .tasks-header {
@@ -168,11 +253,15 @@
 
         .clear-completed-btn:hover {
             background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
         }
 
         .task-list {
             list-style: none;
             padding: 0;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .task-item {
@@ -183,6 +272,24 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            transition: all 0.3s;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .task-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .task-checkbox {
@@ -247,10 +354,12 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
+            transition: all 0.3s;
         }
 
         .delete-btn:hover {
             background: #ff5252;
+            transform: scale(1.05);
         }
 
         .empty-state {
@@ -262,6 +371,78 @@
         .empty-state-icon {
             font-size: 3em;
             margin-bottom: 10px;
+        }
+
+        /* Footer - NEW! */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: auto;
+            text-align: center;
+            color: white;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .footer-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .footer-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer-credits {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+
+        .footer a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -285,7 +466,7 @@
             </div>
         </div>
 
-        <!-- Statistics Dashboard - NEW SECTION! -->
+        <!-- Statistics Dashboard -->
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-number" id="totalTasks">0</div>
@@ -305,6 +486,40 @@
             </div>
         </div>
 
+        <!-- Filter Section - NEW! -->
+        <div class="filter-section">
+            <div class="filter-header">
+                <span class="filter-title">🔍 Filter Tasks</span>
+                <span class="active-filter" id="activeFilter">Showing: All Tasks</span>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterTasks('all')">
+                    All Tasks
+                    <span class="filter-count" id="count-all">0</span>
+                </button>
+                <button class="filter-btn" onclick="filterTasks('pending')">
+                    📌 Pending
+                    <span class="filter-count" id="count-pending">0</span>
+                </button>
+                <button class="filter-btn" onclick="filterTasks('completed')">
+                    ✅ Completed
+                    <span class="filter-count" id="count-completed">0</span>
+                </button>
+                <button class="filter-btn" onclick="filterTasks('high')">
+                    🔴 High Priority
+                    <span class="filter-count" id="count-high">0</span>
+                </button>
+                <button class="filter-btn" onclick="filterTasks('medium')">
+                    🟡 Medium Priority
+                    <span class="filter-count" id="count-medium">0</span>
+                </button>
+                <button class="filter-btn" onclick="filterTasks('low')">
+                    🟢 Low Priority
+                    <span class="filter-count" id="count-low">0</span>
+                </button>
+            </div>
+        </div>
+
         <div class="tasks-section">
             <div class="tasks-header">
                 <h2 class="tasks-title">Your Tasks</h2>
@@ -319,9 +534,45 @@
         </div>
     </div>
 
+    <!-- Footer - NEW! -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-title">DevOps | Assignment 1 | Task #3: Source Code Management</div>
+            <div class="footer-info">
+                <div class="footer-item">
+                    <span>Team Members:</span>
+                    <b><span>Ian Grom & Mo Mohamud</span></b>
+                </div>
+				<div class="footer-item">
+                    <span>|</span>
+                </div>
+                <div class="footer-item">
+                    <span>Date:</span>
+                    <b><span id="currentDate"></span></b>
+                </div>
+				<div class="footer-item">
+                    <span>|</span>
+                </div>
+                <div class="footer-item">
+                    <span>Version:</span>
+                    <b><span>1.0.0</span></b>
+                </div>
+            </div>
+            <div class="footer-credits">
+                <p>Built with HTML, CSS & JavaScript | 
+                   <a href="https://github.com/betterlife-consulting/devops-task-tracker" target="_blank">
+                       View on GitHub
+                   </a> | 
+                   © 2025 Ian Grom & Mo Mohamud
+                </p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // Initialize tasks array
+        // Initialize tasks array and filter state
         let tasks = [];
+        let currentFilter = 'all';
 
         // Add task function
         function addTask() {
@@ -344,7 +595,8 @@
 
             tasks.push(newTask);
             renderTasks();
-            updateStats(); // NEW - Update statistics!
+            updateStats();
+            updateFilterCounts(); // NEW!
 
             // Clear input
             taskInput.value = '';
@@ -357,7 +609,8 @@
             if (task) {
                 task.completed = !task.completed;
                 renderTasks();
-                updateStats(); // NEW - Update statistics!
+                updateStats();
+                updateFilterCounts(); // NEW!
             }
         }
 
@@ -365,10 +618,11 @@
         function deleteTask(id) {
             tasks = tasks.filter(t => t.id !== id);
             renderTasks();
-            updateStats(); // NEW - Update statistics!
+            updateStats();
+            updateFilterCounts(); // NEW!
         }
 
-        // Clear completed tasks - NEW FUNCTION!
+        // Clear completed tasks
         function clearCompleted() {
             const completedCount = tasks.filter(t => t.completed).length;
             if (completedCount === 0) {
@@ -380,10 +634,45 @@
                 tasks = tasks.filter(t => !t.completed);
                 renderTasks();
                 updateStats();
+                updateFilterCounts(); // NEW!
             }
         }
 
-        // Update statistics - NEW FUNCTION!
+        // Filter tasks - NEW ENHANCED VERSION!
+        function filterTasks(filter) {
+            currentFilter = filter;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.filter-btn').classList.add('active');
+            
+            // Update active filter text
+            const filterTexts = {
+                'all': 'All Tasks',
+                'pending': 'Pending Tasks',
+                'completed': 'Completed Tasks',
+                'high': 'High Priority Tasks',
+                'medium': 'Medium Priority Tasks',
+                'low': 'Low Priority Tasks'
+            };
+            document.getElementById('activeFilter').textContent = `Showing: ${filterTexts[filter]}`;
+            
+            renderTasks();
+        }
+
+        // Update filter counts - NEW!
+        function updateFilterCounts() {
+            document.getElementById('count-all').textContent = tasks.length;
+            document.getElementById('count-pending').textContent = tasks.filter(t => !t.completed).length;
+            document.getElementById('count-completed').textContent = tasks.filter(t => t.completed).length;
+            document.getElementById('count-high').textContent = tasks.filter(t => t.priority === 'high').length;
+            document.getElementById('count-medium').textContent = tasks.filter(t => t.priority === 'medium').length;
+            document.getElementById('count-low').textContent = tasks.filter(t => t.priority === 'low').length;
+        }
+
+        // Update statistics
         function updateStats() {
             const total = tasks.length;
             const completed = tasks.filter(t => t.completed).length;
@@ -400,17 +689,37 @@
         function renderTasks() {
             const taskList = document.getElementById('taskList');
             
-            if (tasks.length === 0) {
+            // Filter tasks based on current filter
+            let filteredTasks = tasks;
+            switch(currentFilter) {
+                case 'pending':
+                    filteredTasks = tasks.filter(t => !t.completed);
+                    break;
+                case 'completed':
+                    filteredTasks = tasks.filter(t => t.completed);
+                    break;
+                case 'high':
+                    filteredTasks = tasks.filter(t => t.priority === 'high');
+                    break;
+                case 'medium':
+                    filteredTasks = tasks.filter(t => t.priority === 'medium');
+                    break;
+                case 'low':
+                    filteredTasks = tasks.filter(t => t.priority === 'low');
+                    break;
+            }
+
+            if (filteredTasks.length === 0) {
                 taskList.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">📝</div>
-                        <p>No tasks yet. Add your first task above!</p>
+                        <div class="empty-state-icon">🔍</div>
+                        <p>No tasks found for this filter.</p>
                     </div>
                 `;
                 return;
             }
 
-            taskList.innerHTML = tasks.map(task => `
+            taskList.innerHTML = filteredTasks.map(task => `
                 <li class="task-item ${task.completed ? 'completed' : ''}">
                     <input type="checkbox" 
                            class="task-checkbox" 
@@ -435,9 +744,15 @@
             }
         });
 
-        // Initialize stats on page load
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             updateStats();
+            updateFilterCounts();
+            
+            // Set current date in footer
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
         });
     </script>
 </body>
